@@ -1,0 +1,30 @@
+{
+    "name": "nhalstead/transferable",
+    "description": "Transfer attached relationships from one model instance to another model instance of the same type.",
+    "keywords": [
+        "laravel",
+        "eloquent",
+        "transerable"
+    ],
+    "homepage": "https://github.com/nhalstead/transferable",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Noah Halstead",
+            "email": "nhalstead00@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3",
+        "illuminate/database": "~7.0 || ~8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "nhalstead\\Transferable\\": "src"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
