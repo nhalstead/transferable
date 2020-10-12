@@ -33,15 +33,14 @@ class User extends Model implements NoDanglingRelationships
 }
 ```
 
-By attaching the interface `NoDanglingRelationships` you allow the `TransferableRelationship` to check before it gets deleted to ensure
- it can't be deleted if it still has relationships attached.
+By attaching the interface `NoDanglingRelationships` you enable checks before deletion to ensure no relationships are connected that could be transferred.
 
 ### What now?
 
-Ok so we have things working so now we are able to block delete actions if we have relationships that can be transfered still attached, what now?
+We're able to block delete actions if we have relationships that can be transferred still attached, what now?
 
 This package provides a few extra functions to all models that use `TransferableRelationship` to make things easy and efficient.
-If a model wants to transfer its relationships to another model you an use the example below:
+If a model wants to transfer its relationships to another model you can use the example below:
 
 ```php
 <?php
@@ -61,20 +60,19 @@ $oldUser->delete();
 ?>
 ```
 
-What makes it efficient? This will use the model's relationship to determin what needs to be updated in the database and runs a query on the
- DB to update the relationships without any extra calls to get all of the IDs and detaching things.
+What makes it efficient? This will use the model's relationship to determine what needs to be updated in the database and runs a query on the
+ DB to update the relationships without any extra calls to get all the IDs and detaching things.
  
- ### What else?
- 
- Nothing else, This packge offers a few extra method for debugging and collecting information on the transferable relationships, see below:
- 
- ```php
- 
- // Return the number of transferable items attached to this model
- $newUser->countTransferable();
- 
- // Return boolean if it would have any dangling relationships if deleted.
- // The false param tells it not to throw an Exception
- $newUser->checkDangling(false);
- 
- ```
+### What else?
+
+Nothing else, This package offers a few extra method for debugging and collecting information on the transferable relationships, see below:
+
+```php
+
+// Return the number of transferable items attached to this model
+$newUser->countTransferable();
+
+// Return boolean if it would have any dangling relationships if deleted.
+// The false param tells it not to throw an Exception
+$newUser->checkDangling(false);
+```
