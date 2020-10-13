@@ -4,6 +4,12 @@ Make laravel model relationships transferable!
 
 This is perfect to use when you want a model relationships to me assigned to another model (of the same type) and not be deleted or set null.
 
+## Install
+
+```bash
+composer require nhalstead/transferable
+```
+
 ## How to use
 
 On the model its self you need to add in the use statement and optionally add in the implements to block the model from being deleted.
