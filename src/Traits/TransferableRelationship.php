@@ -32,7 +32,7 @@ trait TransferableRelationship
 			 */
 
 			if ($model instanceof NoDanglingRelationships) {
-				$model->checkDangling();
+				$model->throwIfDangling();
 			}
 		});
 	}
@@ -105,22 +105,19 @@ trait TransferableRelationship
 	 * This is useful to ensure that important items are not set to null on this
 	 *  model's delete action.
 	 *
-	 * @param bool $throwException
-	 * @return int
 	 * @throws DanglingRelationships|\Throwable
 	 */
-	public function checkDangling(bool $throwException = true)
+	public function throwIfDangling()
 	{
-		/**
-		 * @var $this Model
-		 */
-
 		$dangling = $this->countTransferable();
 		if($dangling !== 0) {
-			if($throwException) throw new DanglingRelationships($this, $dangling);
-			return $dangling;
+			throw new DanglingRelationships($this, $dangling);
 		}
-		return 0;
+	}
+
+	public function hasDangling()
+	{
+		return $this->countTransferable() !== 0;
 	}
 
 	/**

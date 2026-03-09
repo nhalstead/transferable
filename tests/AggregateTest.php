@@ -36,12 +36,36 @@ class AggregateTest extends TestCase
 
 		foreach($all as $genre) {
 			$this->assertEquals(2, $genre->countTransferable());
+			$this->assertTrue($genre->hasDangling());
 		}
 	}
 
+    public function testThrowIfDanglingThrowsException()
+    {
+        $category = Genre::find(2);
+
+        $this->assertEquals(2, $category->countTransferable());
+        $this->assertTrue($category->hasDangling());
+        $this->expectException(DanglingRelationships::class);
+        $category->throwIfDangling();
+    }
+
+    public function testThrowIfDanglingDoesNotThrowExceptionWhenEmpty()
+    {
+        $newCategory = Genre::find(1);
+        $category = Genre::find(2);
+
+        $category->transferTo($newCategory);
+        $this->assertEquals(0, $category->countTransferable());
+        $this->assertFalse($category->hasDangling());
+
+        // This should not throw an exception
+        $category->throwIfDangling();
+        $this->assertTrue(true);
+    }
+
     public function testRejectDeleteWhileContainsDangling()
     {
-
     	$category = Genre::find(2);
 
 		$this->assertEquals(2, $category->books()->count());
@@ -55,12 +79,14 @@ class AggregateTest extends TestCase
 		$category = Genre::find(2);
 
 		$this->assertEquals(2, $category->countTransferable());
+		$this->assertTrue($category->hasDangling());
 
 		$changed = $category->transferTo($newCategory, true);
 		$this->assertEquals(2, $changed);
 
 		$this->assertEquals(2, $newCategory->countTransferable());
 		$this->assertEquals(2, $category->countTransferable());
+		$this->assertTrue($category->hasDangling());
     }
 
     public function testDeleteAfterTransferDangling()
@@ -69,12 +95,15 @@ class AggregateTest extends TestCase
 		$category = Genre::find(2);
 
 		$this->assertEquals(2, $category->countTransferable());
+		$this->assertTrue($category->hasDangling());
 
 		$changed = $category->transferTo($newCategory);
 		$this->assertEquals(2, $changed);
 
 		$this->assertEquals(4, $newCategory->countTransferable());
+		$this->assertTrue($newCategory->hasDangling());
 		$this->assertEquals(0, $category->countTransferable());
+		$this->assertFalse($category->hasDangling());
 
     	$category->delete();
     }
