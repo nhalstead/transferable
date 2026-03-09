@@ -59,7 +59,7 @@ class AggregateTest extends TestCase
 		$changed = $category->transferTo($newCategory, true);
 		$this->assertEquals(2, $changed);
 
-		$this->assertEquals(4, $newCategory->countTransferable());
+		$this->assertEquals(2, $newCategory->countTransferable());
 		$this->assertEquals(2, $category->countTransferable());
     }
 
