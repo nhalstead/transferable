@@ -80,5 +80,9 @@ $newUser->countTransferable();
 
 // Return boolean if it would have any dangling relationships if deleted.
 // The false param tells it not to throw an Exception
-$newUser->checkDangling(false);
+$newUser->hasDangling();
+
+// Throw an exception when there are records dangling
+$newUser->throwIfDangling();
+
 ```
